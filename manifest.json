@@ -3,7 +3,7 @@
   "name": "YouTube Music Markers",
   "version": "0.1.0",
   "description": "Add marker-aware skipping to YouTube Music.",
-  "permissions": ["storage"],
+  "permissions": [],
   "host_permissions": ["https://music.youtube.com/*"],
   "content_scripts": [
     {

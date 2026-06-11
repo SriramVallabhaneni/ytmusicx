@@ -21,20 +21,35 @@ function getTrackKey() {
   return `${title}::${artist}`;
 }
 
+let currentTrackKey = null;
+let sessionMarkers = [];
+
+function getCurrentTrackKey() {
+  return new URL(location.href).searchParams.get("v") || getTrackKey();
+}
+
 async function getMarkers() {
-  const key = getTrackKey();
-  const data = await chrome.storage.local.get(key);
-  return data[key] || [];
+  const key = getCurrentTrackKey();
+
+  if (currentTrackKey === null) {
+    currentTrackKey = key;
+  }
+
+  if (key !== currentTrackKey) {
+    currentTrackKey = key;
+    sessionMarkers = [];
+    renderMarkerStatus(sessionMarkers);
+    renderProgressMarkers();
+  }
+
+  return sessionMarkers;
 }
 
 async function saveMarkers(markers) {
-  const key = getTrackKey();
-
-  const cleaned = [...new Set(markers.map(t => Number(t.toFixed(2))))]
+  sessionMarkers = [...new Set(markers.map(t => Number(t.toFixed(2))))]
     .sort((a, b) => a - b);
 
-  await chrome.storage.local.set({ [key]: cleaned });
-  renderMarkerStatus(cleaned);
+  renderMarkerStatus(sessionMarkers);
   renderProgressMarkers();
 }
 
