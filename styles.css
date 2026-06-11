@@ -37,3 +37,24 @@
   color: #aaa;
   margin-left: 4px;
 }
+
+#ytm-progress-marker-layer {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -6px;
+  height: 12px;
+  pointer-events: none;
+  z-index: 999999;
+}
+
+.ytm-progress-marker-dot {
+  position: absolute;
+  top: 0;
+  width: 4px;
+  height: 12px;
+  border-radius: 2px;
+  background: white;
+  transform: translateX(-50%);
+  pointer-events: auto;
+}

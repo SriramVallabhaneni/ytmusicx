@@ -35,6 +35,7 @@ async function saveMarkers(markers) {
 
   await chrome.storage.local.set({ [key]: cleaned });
   renderMarkerStatus(cleaned);
+  renderProgressMarkers();
 }
 
 async function addMarker() {
@@ -221,9 +222,52 @@ function renderMarkerStatus(markers) {
   status.textContent = `${markers.length} marker${markers.length === 1 ? "" : "s"}`;
 }
 
+function getProgressBar() {
+  return document.querySelector("#progress-bar") ||
+         document.querySelector("tp-yt-paper-slider#progress-bar") ||
+         document.querySelector("ytmusic-player-bar tp-yt-paper-slider");
+}
+
+async function renderProgressMarkers() {
+  const player = getPlayer();
+  const progressBar = getProgressBar();
+
+  if (!player || !progressBar || !player.duration) return;
+
+  let markerLayer = document.querySelector("#ytm-progress-marker-layer");
+
+  if (!markerLayer) {
+    markerLayer = document.createElement("div");
+    markerLayer.id = "ytm-progress-marker-layer";
+    progressBar.appendChild(markerLayer);
+  }
+
+  const markers = await getMarkers();
+
+  markerLayer.innerHTML = "";
+
+  for (const marker of markers) {
+    if (marker < 0 || marker > player.duration) continue;
+
+    const dot = document.createElement("div");
+    dot.className = "ytm-progress-marker-dot";
+    dot.style.left = `${(marker / player.duration) * 100}%`;
+    dot.title = formatTime(marker);
+
+    markerLayer.appendChild(dot);
+  }
+}
+
+function formatTime(seconds) {
+  const mins = Math.floor(seconds / 60);
+  const secs = Math.floor(seconds % 60).toString().padStart(2, "0");
+  return `${mins}:${secs}`;
+}
+
 function setup() {
   injectControls();
   interceptSkipButtons();
+  renderProgressMarkers();
 }
 
 setInterval(setup, 1000);
