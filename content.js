@@ -212,8 +212,8 @@ function injectControls() {
   controls.id = "ytm-marker-controls";
 
   controls.innerHTML = `
-    <button id="ytm-add-marker" title="Add marker at current time">Add Marker</button>
-    <button id="ytm-delete-marker" title="Delete nearest marker">Delete Marker</button>
+    <button id="ytm-add-marker" title="Add marker at current time">Add Marker [CTRL+M]</button>
+    <button id="ytm-delete-marker" title="Delete nearest marker">Delete Marker [SHIFT+M]</button>
     <span id="ytm-marker-status">0 markers</span>
   `;
 
