@@ -42,19 +42,20 @@
   position: absolute;
   left: 0;
   right: 0;
-  top: -6px;
-  height: 12px;
+  top: 50%;
+  height: 100%;
   pointer-events: none;
   z-index: 999999;
+  transform: translateY(-50%);
 }
 
 .ytm-progress-marker-dot {
   position: absolute;
-  top: 0;
-  width: 4px;
-  height: 12px;
-  border-radius: 2px;
+  top: 50%;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
   background: white;
-  transform: translateX(-50%);
+  transform: translate(-50%, -50%);
   pointer-events: auto;
 }

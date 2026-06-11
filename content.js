@@ -264,10 +264,41 @@ function formatTime(seconds) {
   return `${mins}:${secs}`;
 }
 
+function setupKeyboardShortcuts() {
+  if (window.ytmMarkersKeyboardSetup) return;
+  window.ytmMarkersKeyboardSetup = true;
+
+  document.addEventListener("keydown", event => {
+    const target = event.target;
+
+    if (
+      target &&
+      (
+        target.tagName === "INPUT" ||
+        target.tagName === "TEXTAREA" ||
+        target.isContentEditable
+      )
+    ) {
+      return;
+    }
+
+    if (event.key.toLowerCase() === "m" && event.ctrlKey) {
+      event.preventDefault();
+      addMarker();
+    }
+
+    if (event.key.toLowerCase() === "m" && event.shiftKey) {
+      event.preventDefault();
+      deleteNearestMarker();
+    }
+  });
+}
+
 function setup() {
   injectControls();
   interceptSkipButtons();
   renderProgressMarkers();
+  setupKeyboardShortcuts();
 }
 
 setInterval(setup, 1000);
